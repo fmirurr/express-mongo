@@ -1,0 +1,31 @@
+services:
+  backend:
+    container_name: server
+    restart: always
+    build:
+      context: server
+      args:
+        NODE_PORT: 3000
+    ports:
+      - 3000:3000
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - mongo
+    networks:
+      - express-mongo
+    expose:
+      - 3000
+  mongo:
+    container_name: mongo
+    restart: always
+    image: mongo:4.2.0
+    volumes:
+      - ./data:/data/db
+    networks:
+      - express-mongo
+    expose:
+      - 27017
+networks:
+  express-mongo:
